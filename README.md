@@ -4,7 +4,7 @@
 
 ## 🌐 在线试玩
 
-**[点击这里开始游戏！](https://aa-ayushadhikari.github.io/fruitninja/)** 🎮
+**[点击这里开始游戏！](https://wenyinos.github.io/fruit-ninja/)** 🎮
 
 无需下载，直接在浏览器中体验！
 
