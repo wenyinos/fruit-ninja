@@ -1,201 +1,201 @@
-# 🍎 Fruit Ninja - Web Game
+# 🍎 水果忍者 - 网页游戏
 
-A modern, browser-based implementation of the classic Fruit Ninja game built with vanilla JavaScript and HTML5 Canvas. Slice fruits, avoid bombs, and aim for high scores in this fast-paced action game!
+基于 vanilla JavaScript 和 HTML5 Canvas 开发的经典水果忍者网页游戏。滑动鼠标切开水果，躲避炸弹，争取最高分！
 
-## 🌐 Live Demo
+## 🌐 在线试玩
 
-**[Play the Game Here!](https://aa-ayushadhikari.github.io/fruitninja/)** 🎮
+**[点击这里开始游戏！](https://aa-ayushadhikari.github.io/fruitninja/)** 🎮
 
-Experience the game directly in your browser - no downloads required!
+无需下载，直接在浏览器中体验！
 
-## 🎮 Features
+## 🎮 游戏特色
 
-- **Classic Fruit Ninja Gameplay**: Slice flying fruits with mouse/touch gestures
-- **Physics-Based Movement**: Realistic gravity and motion physics
-- **Combo System**: Chain slices for higher scores and special effects
-- **Dynamic Difficulty**: Game speed increases over time for progressive challenge
-- **Rich Audio Experience**: Multiple sound effects and background music
-- **Particle Effects**: Juice splashes, explosions, and visual feedback
-- **Responsive Design**: Works on desktop and mobile devices
-- **Fullscreen Support**: Immersive gaming experience
-- **High Score Tracking**: Keep track of your best performances
+- **经典水果忍者玩法**：用鼠标/触控手势切开飞出的水果
+- **物理运动系统**：真实的重力和运动物理
+- **连击系统**：连续切水果获得更高分数和特效
+- **动态难度**：游戏速度随时间递增，越来越有挑战性
+- **丰富音效**：多种切割音效和背景音乐
+- **粒子特效**：果汁飞溅、爆炸、视觉反馈
+- **响应式设计**：支持桌面端和移动端
+- **全屏支持**：沉浸式游戏体验
+- **最高分记录**：追踪你的最佳成绩
 
-## 🚀 Quick Start
+## 🚀 快速开始
 
-1. Clone or download this repository
-2. Open `index.html` in a modern web browser
-3. Click "Enter Fullscreen" to begin
-4. Click "Start Game" and enjoy!
+1. 克隆或下载本仓库
+2. 在现代浏览器中打开 `index.html`
+3. 点击"进入全屏"开始
+4. 点击"开始游戏"即可！
 
-**Note**: For the best experience, use a modern browser with HTML5 Canvas and Web Audio API support.
+**注意**：推荐使用支持 HTML5 Canvas 和 Web Audio API 的现代浏览器。
 
-## 🎯 How to Play
+## 🎯 玩法说明
 
-1. **Start the Game**: Click the "Start Game" button from the main menu
-2. **Slice Fruits**: Move your mouse (or finger on mobile) across fruits to slice them
-3. **Avoid Bombs**: Don't slice the bombs (💣) - they'll end your game!
-4. **Build Combos**: Slice multiple fruits quickly to build combos for bonus points
-5. **Survive**: Keep slicing as the game gets faster and more challenging
+1. **开始游戏**：在主菜单点击"开始游戏"按钮
+2. **切水果**：移动鼠标（或移动端滑动手指）划过水果将其切开
+3. **躲避炸弹**：不要切到炸弹（💣），否则游戏结束！
+4. **连击加分**：快速连续切多个水果可触发连击，获得额外分数
+5. **存活**：随着游戏加速，挑战越来越难
 
-### Controls
-- **Mouse**: Move cursor to slice fruits
-- **Touch**: Swipe across the screen (mobile devices)
-- **F11 or F**: Toggle fullscreen
-- **M**: Mute/unmute audio
-- **Esc (hold)**: Exit fullscreen
-- **Ctrl+D**: Toggle debug mode (development)
+### 操作方式
+- **鼠标**：移动光标切水果
+- **触控**：在屏幕上滑动（移动设备）
+- **F11 或 F**：切换全屏
+- **M**：静音/取消静音
+- **Esc（长按）**：退出全屏
+- **Ctrl+D**：切换调试模式（开发用）
 
-## 🛠️ Project Structure
+## 🛠️ 项目结构
 
 ```
-fruitsninja/
-├── index.html              # Main HTML file
+fruit-ninja/
+├── index.html              # 主 HTML 文件
 ├── styles/
-│   └── main.css            # Game styling
+│   └── main.css            # 游戏样式
 ├── scripts/
-│   ├── main.js             # Entry point and initialization
-│   ├── core/               # Core game systems
-│   │   ├── Constants.js    # Game configuration
-│   │   ├── GameState.js    # Game state management
-│   │   └── GameEngine.js   # Main game loop
-│   ├── entities/           # Game objects
-│   │   ├── GameObject.js   # Base game object class
-│   │   ├── Fruit.js        # Fruit entities
-│   │   ├── FruitSlice.js   # Sliced fruit pieces
-│   │   ├── Particle.js     # Particle effects
-│   │   └── ComboSplash.js  # Combo text effects
-│   ├── input/              # Input handling
-│   │   └── InputManager.js # Mouse/touch input
-│   ├── rendering/          # Graphics and rendering
-│   │   ├── Renderer.js     # Main renderer
-│   │   └── EmojiCache.js   # Emoji rendering optimization
-│   ├── audio/              # Audio system
-│   │   └── AudioManager.js # Sound and music management
-│   ├── effects/            # Visual effects
-│   │   └── EffectsManager.js # Particle and effect systems
-│   ├── spawning/           # Object spawning
-│   │   └── SpawnManager.js # Fruit and bomb spawning
-│   ├── collision/          # Physics and collision
-│   │   └── CollisionDetector.js # Collision detection
-│   ├── ui/                 # User interface
-│   │   └── UIManager.js    # Menu and UI management
-│   └── utils/              # Utility functions
-│       └── GeometryUtils.js # Math and geometry helpers
-└── Sound/                  # Audio assets
-    ├── blade-*.wav         # Slice sound effects
-    ├── combo-*.wav         # Combo sound effects
-    ├── Bomb-*.wav          # Bomb sound effects
-    └── ...                 # Additional audio files
+│   ├── main.js             # 入口和初始化
+│   ├── core/               # 核心系统
+│   │   ├── Constants.js    # 游戏配置常量
+│   │   ├── GameState.js    # 游戏状态管理
+│   │   └── GameEngine.js   # 主游戏循环
+│   ├── entities/           # 游戏对象
+│   │   ├── GameObject.js   # 游戏对象基类
+│   │   ├── Fruit.js        # 水果实体
+│   │   ├── FruitSlice.js   # 切片碎片
+│   │   ├── Particle.js     # 粒子特效
+│   │   └── ComboSplash.js  # 连击文字特效
+│   ├── input/              # 输入处理
+│   │   └── InputManager.js # 鼠标/触控输入
+│   ├── rendering/          # 图形渲染
+│   │   ├── Renderer.js     # 主渲染器
+│   │   └── EmojiCache.js   # Emoji 渲染优化
+│   ├── audio/              # 音频系统
+│   │   └── AudioManager.js # 音效和音乐管理
+│   ├── effects/            # 视觉特效
+│   │   └── EffectsManager.js # 粒子和特效系统
+│   ├── spawning/           # 对象生成
+│   │   └── SpawnManager.js # 水果和炸弹生成
+│   ├── collision/          # 物理和碰撞
+│   │   └── CollisionDetector.js # 碰撞检测
+│   ├── ui/                 # 用户界面
+│   │   └── UIManager.js    # 菜单和 UI 管理
+│   └── utils/              # 工具函数
+│       └── GeometryUtils.js # 数学几何工具
+└── Sound/                  # 音频资源
+    ├── blade-*.wav         # 切割音效
+    ├── combo-*.wav         # 连击音效
+    ├── Bomb-*.wav          # 炸弹音效
+    └── ...                 # 其他音频文件
 ```
 
-## 🔧 Technical Details
+## 🔧 技术细节
 
-### Technologies Used
-- **HTML5 Canvas**: For rendering graphics and animations
-- **Vanilla JavaScript**: No external frameworks or libraries
-- **Web Audio API**: For sound effects and music
-- **CSS3**: For UI styling and responsive design
-- **Emoji**: For fruit and bomb graphics (performance optimized)
+### 使用技术
+- **HTML5 Canvas**：图形渲染和动画
+- **Vanilla JavaScript**：无外部框架或库
+- **Web Audio API**：音效和音乐
+- **CSS3**：UI 样式和响应式设计
+- **Emoji**：水果和炸弹图形（性能优化）
 
-### Architecture
-The game follows a modular architecture with clear separation of concerns:
+### 架构
+游戏采用模块化架构，关注点清晰分离：
 
-- **Game Engine**: Manages the main game loop, timing, and state
-- **Entity System**: Object-oriented approach for game entities
-- **Component Systems**: Specialized managers for different aspects (audio, input, rendering)
-- **Event-Driven**: Loose coupling between systems through events
+- **游戏引擎**：管理主循环、计时和状态
+- **实体系统**：面向对象的游戏实体
+- **组件系统**：各职能管理器（音频、输入、渲染等）
+- **事件驱动**：系统间松耦合
 
-### Performance Optimizations
-- **Emoji Caching**: Pre-rendered emoji sprites for better performance
-- **Particle Pooling**: Reuse particle objects to reduce garbage collection
-- **Efficient Collision Detection**: Optimized algorithms for real-time performance
-- **Canvas Optimization**: Minimal redraws and efficient rendering techniques
+### 性能优化
+- **Emoji 缓存**：预渲染 Emoji 精灵，提升渲染性能
+- **粒子限制**：对粒子数量设上限，减少垃圾回收
+- **高效碰撞检测**：优化算法保证实时性能
+- **Canvas 优化**：最小化重绘，高效渲染技术
 
-## 🎵 Audio Assets
+## 🎵 音频资源
 
-The game includes a comprehensive audio system with:
-- **Blade Sounds**: Multiple slice sound variations
-- **Combo Effects**: Audio feedback for combo achievements  
-- **Environmental Sounds**: Background ambiance and effects
-- **UI Sounds**: Menu navigation and interaction feedback
+游戏包含完整的音频系统：
+- **刀刃音效**：多种切割音效变体
+- **连击音效**：连击达成时的音频反馈
+- **环境音效**：背景氛围和效果音
+- **UI 音效**：菜单导航和交互反馈
 
-## 🎨 Customization
+## 🎨 自定义
 
-### Game Balance
-Edit `scripts/core/Constants.js` to adjust:
-- Spawn rates and difficulty progression
-- Physics properties (gravity, velocities)
-- Particle effects and visual properties
-- Scoring and combo systems
+### 游戏平衡
+编辑 `scripts/core/Constants.js` 调整：
+- 生成频率和难度递增
+- 物理属性（重力、速度）
+- 粒子特效和视觉属性
+- 计分和连击系统
 
-### Visual Styling
-Modify `styles/main.css` to change:
-- Color schemes and themes
-- UI layout and positioning
-- Animation and transition effects
-- Responsive design breakpoints
+### 视觉样式
+修改 `styles/main.css` 更改：
+- 配色方案和主题
+- UI 布局和定位
+- 动画和过渡效果
+- 响应式断点
 
-### Audio
-Replace files in the `Sound/` directory to customize:
-- Sound effects for different actions
-- Background music tracks
-- Audio volume and timing
+### 音频
+替换 `Sound/` 目录中的文件自定义：
+- 各操作音效
+- 背景音乐
+- 音量大小和时机
 
-## 🌐 Browser Compatibility
+## 🌐 浏览器兼容性
 
-**Supported Browsers:**
+**支持浏览器：**
 - Chrome/Chromium 60+
 - Firefox 55+
 - Safari 11+
 - Edge 79+
 
-**Required Features:**
+**所需特性：**
 - HTML5 Canvas 2D Context
 - Web Audio API
-- ES6+ JavaScript support
+- ES6+ JavaScript
 - CSS3 Flexbox
 
-## 🚀 Development
+## 🚀 开发
 
-### Debug Features
-When running locally, access debug tools via the browser console:
+### 调试功能
+本地运行时，可通过浏览器控制台使用调试工具：
 
 ```javascript
-// Available debug commands
-GameDebug.spawnFruit()          // Force spawn a fruit
-GameDebug.spawnBomb()           // Spawn a bomb
-GameDebug.createFruitRain(10)   // Spawn multiple fruits
-GameDebug.getStats()            // Get performance statistics
-GameDebug.toggleDebug()         // Toggle debug display
-GameDebug.clearEffects()        // Clear all particle effects
+// 可用调试命令
+GameDebug.spawnFruit()          // 强制生成一个水果
+GameDebug.spawnBomb()           // 生成一个炸弹
+GameDebug.createFruitRain(10)   // 生成多个水果
+GameDebug.getStats()            // 获取性能统计
+GameDebug.toggleDebug()         // 切换调试显示
+GameDebug.clearEffects()        // 清除所有粒子特效
 ```
 
-### Local Development
-1. Serve files through a local web server (required for audio loading)
-2. Use browser developer tools for debugging
-3. Monitor console for performance metrics and errors
+### 本地开发
+1. 通过本地 Web 服务器提供文件（音频加载必需）
+2. 使用浏览器开发者工具调试
+3. 监控控制台的性能指标和错误
 
-## 📝 License
+## 📝 许可证
 
-This project is open source and available under the MIT License.
+本项目开源，基于 MIT 许可证发布。
 
-## 🤝 Contributing
+## 🤝 参与贡献
 
-Contributions are welcome! Areas for improvement:
-- Additional fruit types and effects
-- New game modes (time attack, zen mode)
-- Enhanced mobile experience
-- Accessibility improvements
-- Performance optimizations
+欢迎贡献！可改进的方向：
+- 更多水果类型和特效
+- 新游戏模式（限时模式、禅模式）
+- 增强移动端体验
+- 无障碍改进
+- 性能优化
 
-## 🎯 Future Enhancements
+## 🎯 未来计划
 
-- **Power-ups**: Special abilities and temporary effects
-- **Multiplayer**: Local and online competitive modes
-- **Achievements**: Unlock system for goals and challenges
-- **Themes**: Different visual styles and environments
-- **Analytics**: Detailed performance and gameplay metrics
+- **道具系统**：特殊能力和临时效果
+- **多人模式**：本地和在线对战
+- **成就系统**：解锁目标和挑战
+- **主题切换**：不同视觉风格和环境
+- **数据分析**：详细的性能和游戏指标
 
 ---
 
-**Enjoy slicing! 🍎🔪**
+**享受切水果的乐趣！🍎🔪**

@@ -36,17 +36,17 @@
       // Wire Enter Fullscreen
       const enterBtn = document.getElementById('enterFullscreenBtn');
       if (enterBtn) {
-        enterBtn.addEventListener('click', async () => {
-          try { await requestFullscreen(); } catch(_) {}
-          // Start menu music on user interaction to satisfy autoplay policies
+        enterBtn.addEventListener('click', () => {
+          // 先切换界面，全屏请求并行进行（不阻塞 UI，避免 promise 挂起时卡在全屏门）
           audioManager.playMenuMusic();
           document.getElementById('fullscreenGate').style.display = 'none';
           document.getElementById('mainMenu').style.display = 'flex';
+          requestFullscreen().catch(() => {});
         });
       }
     } catch (error) {
-      console.error("Failed to initialize game:", error);
-      showErrorMessage("Failed to initialize game. Please refresh and try again.");
+      console.error("游戏初始化失败：", error);
+      showErrorMessage("游戏初始化失败，请刷新页面重试。");
     }
   }
 
@@ -111,6 +111,18 @@
     
     const canvas = document.getElementById('gameCanvas');
     if (canvas) canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+    // 一键静音按钮
+    const muteBtn = document.getElementById('muteBtn');
+    if (muteBtn) muteBtn.addEventListener('click', toggleAudio);
+
+    // 暂停按钮（游戏进行中点击打开暂停界面，内含"退出到菜单"）
+    const pauseBtn = document.getElementById('pauseBtn');
+    if (pauseBtn) pauseBtn.addEventListener('click', () => {
+      if (gameEngine.isRunning && !gameEngine.isPaused && !gameState.gameOver) {
+        gameEngine.pauseGame();
+      }
+    });
 
     document.addEventListener('keydown', (event) => { handleGlobalKeyPress(event); });
 
@@ -201,11 +213,21 @@
   }
 
   /**
-   * Toggles audio on/off
+   * Toggles audio on/off (一键静音)
    */
   function toggleAudio() {
-    // This would be implemented when AudioManager has mute functionality
-    console.log("Audio toggle not yet implemented");
+    const muted = audioManager.toggleMute();
+    updateMuteButton(muted);
+    console.log(muted ? "已静音" : "已恢复声音");
+  }
+
+  /**
+   * Updates the mute button icon
+   * @param {boolean} muted - 是否静音
+   */
+  function updateMuteButton(muted) {
+    const btn = document.getElementById('muteBtn');
+    if (btn) btn.textContent = muted ? '🔇' : '🔊';
   }
 
   /**
@@ -229,11 +251,11 @@
       max-width: 400px;
     `;
     errorDiv.innerHTML = `
-      <h3>Error</h3>
+      <h3>错误</h3>
       <p>${message}</p>
-      <button onclick="this.parentElement.remove(); location.reload();" 
+      <button onclick="this.parentElement.remove(); location.reload();"
               style="margin-top: 10px; padding: 10px 20px; background: #fff; border: none; border-radius: 5px; cursor: pointer;">
-        Reload Game
+        重新加载
       </button>
     `;
     
@@ -257,8 +279,8 @@
       .map(([key]) => key);
     
     if (unsupported.length > 0) {
-      console.warn('Unsupported features:', unsupported);
-      showErrorMessage(`Your browser doesn't support: ${unsupported.join(', ')}`);
+      console.warn('不支持的功能：', unsupported);
+      showErrorMessage(`您的浏览器不支持：${unsupported.join('、')}`);
       return false;
     }
     
@@ -269,7 +291,7 @@
    * Application startup sequence
    */
   function startup() {
-    console.log("Starting Fruit Ninja...");
+    console.log("正在启动水果忍者...");
     
     // Check browser support
     if (!checkBrowserSupport()) {

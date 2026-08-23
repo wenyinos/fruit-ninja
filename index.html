@@ -1,65 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Fruit Ninja</title>
+  <title>水果忍者</title>
   <!-- Modern game UI font -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
   <canvas id="gameCanvas"></canvas>
-  <div id="score">Score: 0</div>
+  <div id="score">分数：0</div>
+
+  <!-- 一键静音按钮 -->
+  <button id="muteBtn" title="静音 (M)">🔊</button>
+  <!-- 暂停按钮（触屏设备暂停/退出菜单入口） -->
+  <button id="pauseBtn" title="暂停 (Esc)">⏸️</button>
 
   <!-- Fullscreen Gate Overlay -->
   <div id="fullscreenGate">
     <div class="fsGatePanel">
-      <div class="fsGateTitle">Click to Enter Fullscreen</div>
-      <div class="fsGateHint">Hold Esc for ~2 seconds to exit fullscreen</div>
-      <button id="enterFullscreenBtn" class="menuButton">Enter Fullscreen</button>
+      <div class="fsGateTitle">点击进入全屏</div>
+      <div class="fsGateHint">长按 Esc 约2秒退出全屏</div>
+      <button id="enterFullscreenBtn" class="menuButton">进入全屏</button>
     </div>
   </div>
 
   <!-- Main Menu -->
   <div id="mainMenu" style="display: none;">
     <div class="menuPanel">
-      <h1 class="menuTitle">Fruit Ninja</h1>
-      <button id="newGameBtn" class="menuButton">Start Game</button>
-      <button id="settingsBtn" class="menuButton">Settings</button>
-      <button id="highScoresBtn" class="menuButton">High Scores</button>
+      <h1 class="menuTitle">水果忍者</h1>
+      <button id="newGameBtn" class="menuButton">开始游戏</button>
+      <button id="settingsBtn" class="menuButton">设置</button>
+      <button id="highScoresBtn" class="menuButton">最高分</button>
     </div>
   </div>
 
   <!-- Settings Menu -->
   <div id="settingsMenu" style="display: none;">
     <div class="menuPanel">
-      <h2 class="menuTitle">Settings</h2>
+      <h2 class="menuTitle">设置</h2>
       <div class="setting">
-        <label for="musicVolume">Music Volume</label>
+        <label for="musicVolume">音乐音量</label>
         <input type="range" id="musicVolume" min="0" max="1" step="0.1" value="1">
       </div>
       <div class="setting">
-        <label for="sfxVolume">SFX Volume</label>
+        <label for="sfxVolume">音效音量</label>
         <input type="range" id="sfxVolume" min="0" max="1" step="0.1" value="1">
       </div>
-      <button id="backBtn" class="menuButton">Back</button>
+      <button id="backBtn" class="menuButton">返回</button>
     </div>
   </div>
 
   <!-- Game Over Overlay -->
   <div id="gameOver">
     <div class="gameOverPanel">
-      <div class="gameOverTitle">GAME OVER</div>
-      <div class="gameOverSubtext">Click to Restart</div>
+      <div class="gameOverTitle">游戏结束</div>
+      <div class="gameOverSubtext">点击重新开始</div>
     </div>
   </div>
   
   <!-- READY SCREEN OVERLAY -->
   <div id="readyScreen">
-    <div id="readyText">Ready?</div>
+    <div id="readyText">准备好了吗？</div>
     <div id="readyApple">🍎</div>
-    <div id="readySubtext">Tap to cut the apple and start</div>
+    <div id="readySubtext">点击切开苹果开始游戏</div>
   </div>
   
   <!-- Component Scripts - Order matters for dependencies -->

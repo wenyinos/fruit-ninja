@@ -7,16 +7,21 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  background: url("../gamebg.png") no-repeat center center fixed;
+  background: url("../gamebg.webp") no-repeat center center fixed;
   background-size: cover;
   font-family: 'Montserrat', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color: #fff;
   overflow: hidden;
   position: relative;
+  overscroll-behavior: none; /* 防 iOS 橡皮筋滚动 */
+  touch-action: manipulation; /* 消除双击缩放延迟 */
 }
 
 /* Canvas Styles */
-canvas { display: block; position: absolute; top: 0; left: 0; }
+canvas {
+  display: block; position: absolute; top: 0; left: 0;
+  touch-action: none; /* 滑动切水果手势不被浏览器接管 */
+}
 
 /* Score Display */
 #score {
@@ -107,7 +112,7 @@ input[type="range"]::-webkit-slider-thumb {
 }
 input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; background: #ffd166; cursor: pointer; border-radius: 50%; border: 2px solid #1b1f24; }
 
-/* Combo Splash Styling */
+/* 连击特效样式 */
 .comboSplash { position: fixed; top: 100px; left: 50%; transform: translateX(-50%); z-index: 50; font-size: 56px; color: #ffd166; text-shadow: 0 2px 8px rgba(0,0,0,0.6); pointer-events: none; }
 
 /* Pause Overlay (injected) */
@@ -118,6 +123,30 @@ input[type="range"]::-moz-range-thumb { width: 20px; height: 20px; background: #
 
 /* Add small hint style for fullscreen prompt */
 #fsHint { color: #c9d1d9; }
+
+/* 一键静音按钮 */
+#muteBtn {
+  position: fixed; bottom: 24px; right: 24px; z-index: 5000;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.25);
+  font-size: 26px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  touch-action: manipulation; /* 防双击缩放 */
+  transition: background .2s ease, transform .15s ease;
+}
+#muteBtn:hover { background: rgba(0,0,0,0.75); transform: scale(1.08); }
+
+/* 暂停按钮（右上角） */
+#pauseBtn {
+  position: fixed; top: 20px; right: 20px; z-index: 5000;
+  width: 56px; height: 56px; border-radius: 50%;
+  background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.25);
+  font-size: 24px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  touch-action: manipulation; /* 防双击缩放 */
+  transition: background .2s ease, transform .15s ease;
+}
+#pauseBtn:hover { background: rgba(0,0,0,0.75); transform: scale(1.08); }
 
 /* Fullscreen Gate Overlay */
 #fullscreenGate { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.88); z-index: 4000; }

@@ -9,85 +9,85 @@ class AudioManager {
     // Sound file collections organized by type
     this.soundGroups = {
       fruitSpawn: [
-        "Sound/Throw-fruit.wav",
-        "Sound/Impact-Apple.wav",
-        "Sound/Impact-Banana.wav",
-        "Sound/Impact-Orange.wav",
-        "Sound/Impact-Pineapple.wav",
-        "Sound/Impact-Strawberry.wav",
-        "Sound/Impact-Watermelon.wav",
-        "Sound/dragonfruit.wav"
+        "Sound/Throw-fruit.mp3",
+        "Sound/Impact-Apple.mp3",
+        "Sound/Impact-Banana.mp3",
+        "Sound/Impact-Orange.mp3",
+        "Sound/Impact-Pineapple.mp3",
+        "Sound/Impact-Strawberry.mp3",
+        "Sound/Impact-Watermelon.mp3",
+        "Sound/dragonfruit.mp3"
       ],
       
       bombSpawn: [
-        "Sound/player-bomb-launch.wav",
-        "Sound/menu-bomb.wav"
+        "Sound/player-bomb-launch.mp3",
+        "Sound/menu-bomb.mp3"
       ],
       
       fruitCut: [
-        "Sound/Clean-Slice-1.wav",
-        "Sound/Clean-Slice-2.wav",
-        "Sound/Clean-Slice-3.wav",
-        "Sound/blade-cherry-blossom-1-1.wav",
-        "Sound/blade-cherry-blossom-1-2.wav",
-        "Sound/pome-slice-1.wav",
-        "Sound/pome-slice-2.wav",
-        "Sound/pome-slice-3.wav"
+        "Sound/Clean-Slice-1.mp3",
+        "Sound/Clean-Slice-2.mp3",
+        "Sound/Clean-Slice-3.mp3",
+        "Sound/blade-cherry-blossom-1-1.mp3",
+        "Sound/blade-cherry-blossom-1-2.mp3",
+        "Sound/pome-slice-1.mp3",
+        "Sound/pome-slice-2.mp3",
+        "Sound/pome-slice-3.mp3"
       ],
       
       bombCut: [
-        "Sound/Bomb-explode.wav",
-        "Sound/Throw-bomb.wav",
-        "Sound/Bomb-Fuse.wav"
+        "Sound/Bomb-explode.mp3",
+        "Sound/Throw-bomb.mp3",
+        "Sound/Bomb-Fuse.mp3"
       ],
       
       swipe: [
-        "Sound/bamboo-swipe-1.wav",
-        "Sound/bamboo-swipe-2.wav",
-        "Sound/bamboo-swipe-3.wav",
-        "Sound/bamboo-swipe-4.wav",
-        "Sound/Sword-swipe-1.wav",
-        "Sound/Sword-swipe-2.wav",
-        "Sound/Sword-swipe-3.wav",
-        "Sound/Sword-swipe-4.wav",
-        "Sound/Sword-swipe-5.wav",
-        "Sound/Sword-swipe-6.wav",
-        "Sound/Sword-swipe-7.wav"
+        "Sound/bamboo-swipe-1.mp3",
+        "Sound/bamboo-swipe-2.mp3",
+        "Sound/bamboo-swipe-3.mp3",
+        "Sound/bamboo-swipe-4.mp3",
+        "Sound/Sword-swipe-1.mp3",
+        "Sound/Sword-swipe-2.mp3",
+        "Sound/Sword-swipe-3.mp3",
+        "Sound/Sword-swipe-4.mp3",
+        "Sound/Sword-swipe-5.mp3",
+        "Sound/Sword-swipe-6.mp3",
+        "Sound/Sword-swipe-7.mp3"
       ],
       
       combo: [
-        "Sound/combo-1.wav",
-        "Sound/combo-2.wav",
-        "Sound/combo-3.wav",
-        "Sound/combo-4.wav",
-        "Sound/combo-5.wav",
-        "Sound/Combo-6.wav",
-        "Sound/Combo-7.wav",
-        "Sound/Combo-8.wav",
-        "Sound/combo-blitz-1.wav",
-        "Sound/combo-blitz-2.wav",
-        "Sound/combo-blitz-3.wav",
-        "Sound/combo-blitz-4.wav",
-        "Sound/combo-blitz-5.wav",
-        "Sound/combo-blitz-6.wav",
-        "Sound/Combo.wav",
-        "Sound/angel-combo-1.wav",
-        "Sound/angel-combo-2.wav",
-        "Sound/angel-combo-3.wav",
-        "Sound/angel-combo-4.wav",
-        "Sound/angel-combo-5.wav",
-        "Sound/Combo-Blitz-Backing.wav",
-        "Sound/Combo-Blitz-Backing-Light.wav",
-        "Sound/Combo-Blitz-Backing-End.wav"
+        "Sound/combo-1.mp3",
+        "Sound/combo-2.mp3",
+        "Sound/combo-3.mp3",
+        "Sound/combo-4.mp3",
+        "Sound/combo-5.mp3",
+        "Sound/Combo-6.mp3",
+        "Sound/Combo-7.mp3",
+        "Sound/Combo-8.mp3",
+        "Sound/combo-blitz-1.mp3",
+        "Sound/combo-blitz-2.mp3",
+        "Sound/combo-blitz-3.mp3",
+        "Sound/combo-blitz-4.mp3",
+        "Sound/combo-blitz-5.mp3",
+        "Sound/combo-blitz-6.mp3",
+        "Sound/Combo.mp3",
+        "Sound/angel-combo-1.mp3",
+        "Sound/angel-combo-2.mp3",
+        "Sound/angel-combo-3.mp3",
+        "Sound/angel-combo-4.mp3",
+        "Sound/angel-combo-5.mp3",
+        "Sound/Combo-Blitz-Backing.mp3",
+        "Sound/Combo-Blitz-Backing-Light.mp3",
+        "Sound/Combo-Blitz-Backing-End.mp3"
       ]
     };
 
     // Special audio files
     this.specialSounds = {
-      gameStart: "Sound/Game-start.wav",
-      gameOver: "Sound/Game-over.wav",
-      uiHover: "Sound/bamboo-swipe-2.wav",
-      uiClick: "Sound/Clean-Slice-1.wav"
+      gameStart: "Sound/Game-start.mp3",
+      gameOver: "Sound/Game-over.mp3",
+      uiHover: "Sound/bamboo-swipe-2.mp3",
+      uiClick: "Sound/Clean-Slice-1.mp3"
     };
 
     // Menu music 
@@ -107,6 +107,10 @@ class AudioManager {
 
     // Initialize SFX volume
     this.sfxVolume = 1.0;
+
+    // Mute state
+    this.isMuted = false;
+    this._musicVolume = 0.35; // 正常音量，静音时归零、恢复时还原
 
     // Simple audio pool per filename to prevent creating many Audio objects
     this._audioPools = new Map(); // filename -> { list: Audio[], index: number }
@@ -170,6 +174,7 @@ class AudioManager {
    * @param {string} filename - Path to the audio file to play
    */
   playSoundFile(filename) {
+    if (this.isMuted) return; // 静音时跳过播放
     try {
       const audio = this._getPooledAudio(filename);
       // Reset and play
@@ -276,7 +281,7 @@ class AudioManager {
     const tick = () => {
       i++;
       const t = i/steps;
-      audio.volume = Math.max(0, Math.min(1, start + delta * t));
+      audio.volume = this.isMuted ? 0 : Math.max(0, Math.min(1, start + delta * t));
       if (i < steps) setTimeout(tick, 30);
     };
     tick();
@@ -335,6 +340,27 @@ class AudioManager {
    */
   setSfxVolume(volume) {
     this.sfxVolume = volume;
+  }
+
+  /**
+   * Toggles mute state (音效 + 音乐一起静音)
+   * @returns {boolean} 静音后的状态，true 表示已静音
+   */
+  toggleMute() {
+    return this.setMuted(!this.isMuted);
+  }
+
+  /**
+   * Sets the mute state
+   * @param {boolean} muted - 是否静音
+   * @returns {boolean} 静音后的状态
+   */
+  setMuted(muted) {
+    this.isMuted = !!muted;
+    if (this.menuMusic) {
+      this.menuMusic.volume = this.isMuted ? 0 : this._musicVolume;
+    }
+    return this.isMuted;
   }
 
   /** UI hover/click helpers */

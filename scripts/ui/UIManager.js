@@ -61,7 +61,7 @@ class UIManager {
    */
   updateScore() {
     if (this.scoreElement) {
-      this.scoreElement.textContent = `Score: ${gameState.score}`;
+      this.scoreElement.textContent = `分数：${gameState.score}`;
       
       // Add pulsing effect for score increases
       if (this.lastScore !== gameState.score) {
@@ -247,7 +247,7 @@ class UIManager {
         hint.style.cssText = `margin-top: 10px; font-size: 18px; color: #0ff; text-shadow: 0 0 10px #0ff;`;
         this.readyScreenElement.appendChild(hint);
       }
-      hint.textContent = `Best: ${gameState.bestScore || 0}`;
+      hint.textContent = `最佳：${gameState.bestScore || 0}`;
     }
   }
 
@@ -272,7 +272,7 @@ class UIManager {
       panel.style.cssText = `position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 2100; background: rgba(0,0,0,0.8);`;
       const inner = document.createElement('div');
       inner.style.cssText = `background: rgba(20,20,25,0.9); color: #e6edf3; padding: 24px 28px; width: 420px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.12);`;
-      inner.innerHTML = `<div style="font-size:24px;font-weight:900;margin-bottom:12px;">High Scores</div><div id="hsList"></div><div style="display:flex;gap:10px;margin-top:16px;"><button id="hsClose" class="menuButton">Close</button></div>`;
+      inner.innerHTML = `<div style="font-size:24px;font-weight:900;margin-bottom:12px;">最高分</div><div id="hsList"></div><div style="display:flex;gap:10px;margin-top:16px;"><button id="hsClose" class="menuButton">关闭</button></div>`;
       panel.appendChild(inner);
       document.body.appendChild(panel);
       this.highScoresPanel = panel;
@@ -283,8 +283,8 @@ class UIManager {
     const entries = gameState.highScores || [];
     const best = gameState.bestScore || 0;
     if (list) {
-      list.innerHTML = `<div style="margin-bottom:10px;">Best: <b>${best}</b></div>` +
-        entries.map((e, i) => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span>${i+1}.</span><span>${e.score}</span><span style="opacity:.7">${new Date(e.date).toLocaleDateString()}</span></div>`).join('') || '<div>No scores yet.</div>';
+      list.innerHTML = `<div style="margin-bottom:10px;">最佳：<b>${best}</b></div>` +
+        entries.map((e, i) => `<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06)"><span>${i+1}.</span><span>${e.score}</span><span style="opacity:.7">${new Date(e.date).toLocaleDateString('zh-CN')}</span></div>`).join('') || '<div>暂无记录</div>';
     }
 
     this.highScoresPanel.style.display = 'flex';
@@ -300,10 +300,10 @@ class UIManager {
       if (panel) {
         const best = gameState.bestScore || 0;
         panel.innerHTML = `
-          <div class="gameOverTitle">GAME OVER</div>
-          <div class="gameOverScore">Final Score: ${gameState.score}</div>
-          <div class="gameOverSubtext">Best: ${best}</div>
-          <div class="gameOverSubtext">Click to Restart</div>
+          <div class="gameOverTitle">游戏结束</div>
+          <div class="gameOverScore">最终分数：${gameState.score}</div>
+          <div class="gameOverSubtext">最佳：${best}</div>
+          <div class="gameOverSubtext">点击重新开始</div>
         `;
       }
     }
@@ -420,7 +420,7 @@ class UIManager {
     
     // Reset displays
     if (this.scoreElement) {
-      this.scoreElement.textContent = "Score: 0";
+      this.scoreElement.textContent = "分数：0";
     }
     
     this.hideGameOverScreen();
@@ -453,7 +453,7 @@ class UIManager {
       text-align: center; width: 90%; max-width: 420px; box-shadow: 0 0 25px #ff0055;`;
 
     const title = document.createElement('div');
-    title.textContent = 'Paused';
+    title.textContent = '已暂停';
     title.style.cssText = `font-size: 36px; color: #ff0055; text-shadow: 0 0 20px #ff0055; margin-bottom: 20px;`;
 
     const btn = (label, onClick) => {
@@ -465,9 +465,9 @@ class UIManager {
       return b;
     };
 
-    const resumeBtn = btn('Resume', () => gameEngine.resumeGame());
-    const restartBtn = btn('Restart', () => { this.hidePauseOverlay(); this.handleRestartGame(); });
-    const exitBtn = btn('Exit to Menu', () => { this.hidePauseOverlay(); gameEngine.returnToMenu(); });
+    const resumeBtn = btn('继续游戏', () => gameEngine.resumeGame());
+    const restartBtn = btn('重新开始', () => { this.hidePauseOverlay(); this.handleRestartGame(); });
+    const exitBtn = btn('退出到菜单', () => { this.hidePauseOverlay(); gameEngine.returnToMenu(); });
 
     panel.appendChild(title);
     panel.appendChild(resumeBtn);

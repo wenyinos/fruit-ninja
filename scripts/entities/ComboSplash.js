@@ -38,10 +38,10 @@ class ComboSplash extends GameObject {
    * @returns {ComboSplash} New combo splash instance
    */
   static createComboSplash(comboCount, canvasWidth) {
-    const text = `Combo ${comboCount}!`;
+    const text = `连击 ${comboCount}!`;
     const x = canvasWidth / 2;
     const y = GameConstants.COMBO_SPLASH_Y_POSITION;
-    
+
     return new ComboSplash(text, x, y);
   }
 
@@ -57,16 +57,16 @@ class ComboSplash extends GameObject {
     
     // Special text and colors for milestone combos
     if (comboCount >= 10) {
-      text = `INSANE COMBO ${comboCount}!`;
+      text = `疯狂连击 ${comboCount}!`;
       color = "#ff00ff"; // Magenta for insane combos
     } else if (comboCount >= 7) {
-      text = `MEGA COMBO ${comboCount}!`;
+      text = `超级连击 ${comboCount}!`;
       color = "#ff4400"; // Orange-red for mega combos
     } else if (comboCount >= 5) {
-      text = `SUPER COMBO ${comboCount}!`;
+      text = `大连击 ${comboCount}!`;
       color = "#00ff00"; // Green for super combos
     } else {
-      text = `Combo ${comboCount}!`;
+      text = `连击 ${comboCount}!`;
     }
     
     const splash = new ComboSplash(text, canvasWidth / 2, GameConstants.COMBO_SPLASH_Y_POSITION);

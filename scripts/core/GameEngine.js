@@ -40,7 +40,7 @@ class GameEngine {
     // Get canvas element
     this.canvas = document.getElementById("gameCanvas");
     if (!this.canvas) {
-      throw new Error("Canvas element 'gameCanvas' not found");
+      throw new Error("未找到 Canvas 元素 'gameCanvas'");
     }
     
     // Initialize core components
@@ -123,7 +123,7 @@ class GameEngine {
     uiManager.hidePauseOverlay?.();
     // Hide cursor again if desired
     if (this.canvas && !this.showCursor) this.canvas.style.cursor = 'none';
-    console.log("Game resumed");
+    console.log("游戏已恢复");
   }
 
   /**
@@ -248,7 +248,7 @@ class GameEngine {
   handleGameOver() {
     // Only log once when transitioning to game over
     if (!this.gameOverLogged) {
-      console.log(`Game Over! Final Score: ${gameState.score}`);
+      console.log(`游戏结束！最终分数：${gameState.score}`);
       this.gameOverLogged = true;
     }
     
@@ -326,7 +326,7 @@ class GameEngine {
    */
   toggleDebugMode() {
     this.debugMode = !this.debugMode;
-    console.log(`Debug mode ${this.debugMode ? 'enabled' : 'disabled'}`);
+    console.log(`调试模式${this.debugMode ? '已开启' : '已关闭'}`);
   }
 
   /**
@@ -353,7 +353,7 @@ class GameEngine {
   setTargetFrameRate(targetFps) {
     // This would require modifying the game loop to use setTimeout
     // instead of requestAnimationFrame for precise timing
-    console.warn("Custom frame rate not implemented - using requestAnimationFrame");
+    console.warn("自定义帧率未实现 - 使用 requestAnimationFrame");
   }
 
   /**
@@ -417,7 +417,7 @@ class GameEngine {
     // Restore cursor on destroy
     if (this.canvas) this.canvas.style.cursor = 'default';
     
-    console.log("Game Engine destroyed");
+    console.log("游戏引擎已销毁");
   }
 
   /**
