@@ -23,13 +23,10 @@ class GameState {
     this.lastTime = null;
     this.lastSpawnTime = performance.now();
     this.lastSliceTime = 0;
-    this.lastSwipeSoundTime = 0;
-    
+
     // Gameplay State
     this.comboCount = 0;
     this.spawnInterval = GameConstants.INITIAL_SPAWN_INTERVAL;
-    // Track the last combo level for which a sound was played
-    this.lastComboSoundCount = 0;
     
     // Input State
     this.swipePoints = [];      // Array of recent swipe trail points
@@ -65,12 +62,10 @@ class GameState {
     this.lastTime = null;
     this.lastSpawnTime = performance.now();
     this.lastSliceTime = 0;
-    this.lastSwipeSoundTime = 0;
-    
+
     // Reset gameplay state
     this.comboCount = 0;
     this.spawnInterval = GameConstants.INITIAL_SPAWN_INTERVAL;
-    this.lastComboSoundCount = 0;
     
     // Reset input state
     this.swipePoints.length = 0;
@@ -103,7 +98,6 @@ class GameState {
   updateComboStatus() {
     if (performance.now() - this.lastSliceTime > GameConstants.COMBO_THRESHOLD) {
       this.comboCount = 0;
-      this.lastComboSoundCount = 0;
     }
   }
 

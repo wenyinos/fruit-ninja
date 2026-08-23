@@ -19,10 +19,12 @@ class Renderer {
 
   /**
    * Resizes the canvas to match the window size
+   * 强制横屏：竖屏时内容旋转 90°，canvas 宽高交换
    */
   resizeCanvas() {
-    this.canvas.width = window.innerWidth;
-    this.canvas.height = window.innerHeight;
+    const portrait = window.innerHeight > window.innerWidth;
+    this.canvas.width = portrait ? window.innerHeight : window.innerWidth;
+    this.canvas.height = portrait ? window.innerWidth : window.innerHeight;
   }
 
   /**

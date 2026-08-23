@@ -124,19 +124,12 @@ class CollisionDetector {
    */
   handleFruitSlice(fruit) {
     const canvas = document.getElementById("gameCanvas");
-    
+
     // Create all slice effects
     effectsManager.createFruitSliceEffect(fruit, canvas.width);
-    
+
     // Create subtle screen flash for juice effect
     effectsManager.createScreenFlash("rgba(255,50,50,0.2)", 0.3, 0.2);
-
-    // Play combo sound if combo advanced (>= 2 and increased)
-    const comboCount = gameState.getDisplayCombo();
-    if (comboCount && comboCount > (gameState.lastComboSoundCount || 0)) {
-      audioManager.playComboSound?.();
-      gameState.lastComboSoundCount = comboCount;
-    }
   }
 
   /**

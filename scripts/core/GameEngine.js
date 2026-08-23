@@ -83,10 +83,8 @@ class GameEngine {
       this.canvas.style.cursor = 'none';
     }
 
-    // Auto-enter fullscreen if opted-in
-    if (this.autoFullscreen) {
-      document.documentElement.requestFullscreen?.().catch(() => {});
-    }
+    // Note: fullscreen is managed by the container in the tool runtime;
+    // the autoFullscreen option is a no-op there.
 
     // Start the game loop
     requestAnimationFrame((timestamp) => this.gameLoop(timestamp));

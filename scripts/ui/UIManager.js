@@ -109,9 +109,6 @@ class UIManager {
    */
   handleStartGame() {
     if (!this.gameStarted) {
-      // Play start sound
-      audioManager.playGameStartSound();
-      
       // Hide ready screen with fade effect
       this.hideReadyScreen();
       
@@ -147,10 +144,7 @@ class UIManager {
     spawnManager.reset();
     collisionDetector.reset();
     effectsManager.clearAllEffects();
-    
-    // Play start sound
-    audioManager.playGameStartSound();
-    
+
     // Restart the game
     gameEngine.startGame();
   }
@@ -197,9 +191,6 @@ class UIManager {
         this.gameOverElement.style.transition = "opacity 0.5s ease";
         this.gameOverElement.style.opacity = "1";
       }, 100);
-      
-      // Play game over sound
-      audioManager.playGameOverSound();
       
       // Update final score display
       this.updateFinalScore();
@@ -324,7 +315,7 @@ class UIManager {
       transform: translateX(-50%);
       color: ${color};
       font-size: 24px;
-      font-family: 'Orbitron', sans-serif;
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
       text-shadow: 0 0 10px ${color};
       z-index: 20;
       pointer-events: none;
@@ -357,7 +348,7 @@ class UIManager {
       top: ${y}px;
       color: #ff0;
       font-size: 20px;
-      font-family: 'Orbitron', sans-serif;
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
       text-shadow: 0 0 10px #ff0;
       z-index: 15;
       pointer-events: none;
@@ -386,7 +377,6 @@ class UIManager {
   updateComboDisplay(comboCount) {
     if (comboCount >= 2) {
       this.showNotification(`Combo ${comboCount}!`, 1, "#ff0");
-      audioManager.playComboSound?.();
       // Optional: popup for points gain equal to combo count near top-center
       try {
         const canvas = document.getElementById('gameCanvas');
@@ -445,7 +435,7 @@ class UIManager {
     overlay.id = 'pauseOverlay';
     overlay.style.cssText = `
       position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
-      background: rgba(0,0,0,0.7); z-index: 1800; font-family: 'Orbitron', sans-serif; color: #0ff;`;
+      background: rgba(0,0,0,0.7); z-index: 1800; font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; color: #0ff;`;
 
     const panel = document.createElement('div');
     panel.style.cssText = `
@@ -491,13 +481,9 @@ class UIManager {
   // Helper for menu navigation if main menu is present
   showMainMenu() {
     const mainMenu = document.getElementById('mainMenu');
-    const settingsMenu = document.getElementById('settingsMenu');
-    if (settingsMenu) settingsMenu.style.display = 'none';
     if (mainMenu) mainMenu.style.display = 'flex';
     // Reset ready screen too
     this.showReadyScreen();
-    // Ensure menu music is playing when returning to the menu
-    audioManager.playMenuMusic?.();
   }
 }
 

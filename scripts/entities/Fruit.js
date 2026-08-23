@@ -110,7 +110,6 @@ class Fruit extends GameObject {
     
     if (this.type === "bomb") {
       // Handle bomb explosion
-      audioManager.playBombCutSound();
       gameState.triggerGameOver();
       return {
         type: "bomb",
@@ -119,7 +118,6 @@ class Fruit extends GameObject {
       };
     } else {
       // Handle fruit slice
-      audioManager.playFruitCutSound();
       return {
         type: "fruit",
         position: { x: this.x, y: this.y },

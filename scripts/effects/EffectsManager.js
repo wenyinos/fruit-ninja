@@ -87,12 +87,6 @@ class EffectsManager {
       gameState.comboSplashes.shift();
     }
 
-    // Play combo sound only once per comboCount increase
-    if (comboCount > (gameState.lastComboSoundCount || 0)) {
-      audioManager.playComboSound?.();
-      gameState.lastComboSoundCount = comboCount;
-    }
-
     let splash;
 
     // Use special styling for milestone combos

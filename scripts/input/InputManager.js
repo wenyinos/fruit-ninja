@@ -48,16 +48,33 @@ class InputManager {
   }
 
   /**
+   * 强制横屏坐标换算：竖屏旋转 90° 时，把视口坐标转为 canvas 内容坐标
+   * 内容顺时针旋转 90° 后：内容 x = 内容宽 - 视口 y，内容 y = 视口 x
+   * @returns {boolean} 是否处于竖屏旋转模式
+   */
+  isRotated() {
+    return window.innerHeight > window.innerWidth;
+  }
+
+  toCanvasX(clientX, clientY) {
+    return this.isRotated() ? this.canvas.width - clientY : clientX;
+  }
+
+  toCanvasY(clientX, clientY) {
+    return this.isRotated() ? clientX : clientY;
+  }
+
+  /**
    * Handles the start of an input interaction (mouse down or touch start)
    * @param {MouseEvent} event - Mouse event object
    */
   handleStart(event) {
     // Clear existing swipe points and start new swipe
     gameState.swipePoints.length = 0;
-    this.addSwipePoint(event.clientX, event.clientY);
+    this.addSwipePoint(this.toCanvasX(event.clientX, event.clientY), this.toCanvasY(event.clientX, event.clientY));
     gameState.isSwiping = true;
     this.isInputActive = true;
-    
+
     this.lastInputPosition = { x: event.clientX, y: event.clientY };
   }
 
@@ -67,12 +84,9 @@ class InputManager {
    */
   handleMove(event) {
     if (!gameState.isSwiping) return;
-    
-    this.addSwipePoint(event.clientX, event.clientY);
-    
-    // Play swipe sound with cooldown
-    audioManager.playSwipeSound();
-    
+
+    this.addSwipePoint(this.toCanvasX(event.clientX, event.clientY), this.toCanvasY(event.clientX, event.clientY));
+
     this.lastInputPosition = { x: event.clientX, y: event.clientY };
   }
 
@@ -178,9 +192,10 @@ class InputManager {
    */
   screenToCanvas(screenX, screenY) {
     const rect = this.canvas.getBoundingClientRect();
+    // 横屏旋转模式下画布相对视口有 90° 旋转，用统一换算函数
     return {
-      x: screenX - rect.left,
-      y: screenY - rect.top
+      x: this.toCanvasX(screenX, screenY),
+      y: this.toCanvasY(screenX, screenY)
     };
   }
 

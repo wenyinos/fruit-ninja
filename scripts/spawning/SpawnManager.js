@@ -82,13 +82,6 @@ class SpawnManager {
     const fruit = Fruit.createRandom(canvas.width, canvas.height);
     
     gameState.fruits.push(fruit);
-    
-    // Play appropriate spawn sound
-    if (fruit.type === "bomb") {
-      audioManager.playBombSpawnSound();
-    } else {
-      audioManager.playFruitSpawnSound();
-    }
   }
 
   /**
@@ -151,13 +144,6 @@ class SpawnManager {
     
     const fruit = new Fruit(x, y, vx, vy, fruitType, emoji);
     gameState.fruits.push(fruit);
-    
-    // Play appropriate spawn sound
-    if (fruit.type === "bomb") {
-      audioManager.playBombSpawnSound();
-    } else {
-      audioManager.playFruitSpawnSound();
-    }
   }
 
   /**
@@ -172,7 +158,6 @@ class SpawnManager {
       setTimeout(() => {
         const fruit = Fruit.createRandom(canvas.width, canvas.height);
         gameState.fruits.push(fruit);
-        audioManager.playFruitSpawnSound();
       }, i * 100);
     }
   }

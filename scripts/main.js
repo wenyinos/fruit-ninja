@@ -30,18 +30,16 @@
       document.getElementById('mainMenu').style.display = 'none';
       document.getElementById('fullscreenGate').style.display = 'flex';
 
-      // Do not autoplay music here to avoid browser blocking; wait for user gesture.
-      // audioManager.playMenuMusic();
-
       // Wire Enter Fullscreen
+      // 容器内全屏由容器统一管理，此处仅切换界面
       const enterBtn = document.getElementById('enterFullscreenBtn');
       if (enterBtn) {
         enterBtn.addEventListener('click', () => {
-          // 先切换界面，全屏请求并行进行（不阻塞 UI，避免 promise 挂起时卡在全屏门）
-          audioManager.playMenuMusic();
+          // 尝试锁定横屏（用户手势内调用，WebView 支持则生效；失败回退 CSS 旋转）
+          try { screen.orientation?.lock?.('landscape'); } catch(_) {}
           document.getElementById('fullscreenGate').style.display = 'none';
           document.getElementById('mainMenu').style.display = 'flex';
-          requestFullscreen().catch(() => {});
+          applyLandscape();
         });
       }
     } catch (error) {
@@ -51,58 +49,40 @@
   }
 
   /**
-   * Sets up menu and settings handlers
+   * Sets up menu handlers
    */
   function setupMenuHandlers() {
     const mainMenu = document.getElementById('mainMenu');
-    const settingsMenu = document.getElementById('settingsMenu');
     const newGameBtn = document.getElementById('newGameBtn');
-    const settingsBtn = document.getElementById('settingsBtn');
     const highScoresBtn = document.getElementById('highScoresBtn');
-    const backBtn = document.getElementById('backBtn');
-    const musicVolume = document.getElementById('musicVolume');
-    const sfxVolume = document.getElementById('sfxVolume');
 
-    const attachUx = (el) => {
-      if (!el) return;
-      el.addEventListener('mouseenter', () => audioManager.playUiHover());
-      el.addEventListener('focus', () => audioManager.playUiHover());
-      el.addEventListener('click', () => audioManager.playUiClick());
-    };
-
-    [newGameBtn, settingsBtn, highScoresBtn, backBtn].forEach(attachUx);
-
-    newGameBtn.addEventListener('click', async () => {
-      // Fullscreen already entered by gate; proceed to Ready
+    newGameBtn.addEventListener('click', () => {
       mainMenu.style.display = 'none';
-      audioManager.stopMenuMusic(true);
       gameEngine.showReadyScreen();
     });
 
-    settingsBtn.addEventListener('click', () => {
-      mainMenu.style.display = 'none';
-      settingsMenu.style.display = 'flex';
-    });
-
     highScoresBtn.addEventListener('click', () => uiManager.showHighScores());
+  }
 
-    backBtn.addEventListener('click', () => {
-      settingsMenu.style.display = 'none';
-      mainMenu.style.display = 'flex';
-      audioManager.playMenuMusic();
-    });
-
-    musicVolume.addEventListener('input', (e) => { audioManager.menuMusic && (audioManager.menuMusic.volume = e.target.value); });
-    sfxVolume.addEventListener('input', (e) => { audioManager.setSfxVolume(e.target.value); });
+  /**
+   * 强制横屏：竖屏时给 body 加旋转类并交换 canvas 尺寸
+   */
+  function applyLandscape() {
+    document.body.classList.toggle('force-landscape', window.innerHeight > window.innerWidth);
+    gameEngine.handleResize();
   }
 
   /**
    * Sets up global event handlers for the application
    */
   function setupGlobalEventHandlers() {
-    // Window resize handler
-    window.addEventListener('resize', () => { gameEngine.handleResize(); });
-    
+    // Window resize handler (resize 也会在模拟器/视口变化时触发，统一走强制横屏逻辑)
+    window.addEventListener('resize', applyLandscape);
+
+    // Orientation change handler (强制横屏)
+    window.addEventListener('orientationchange', applyLandscape);
+    applyLandscape();
+
     // Visibility change handler (pause when tab is hidden)
     document.addEventListener('visibilitychange', () => {
       if (document.hidden) { if (gameEngine.isRunning && !gameEngine.isPaused) gameEngine.pauseGame(); }
@@ -111,10 +91,6 @@
     
     const canvas = document.getElementById('gameCanvas');
     if (canvas) canvas.addEventListener('contextmenu', (e) => e.preventDefault());
-
-    // 一键静音按钮
-    const muteBtn = document.getElementById('muteBtn');
-    if (muteBtn) muteBtn.addEventListener('click', toggleAudio);
 
     // 暂停按钮（游戏进行中点击打开暂停界面，内含"退出到菜单"）
     const pauseBtn = document.getElementById('pauseBtn');
@@ -129,18 +105,6 @@
     window.addEventListener('error', (event) => { console.error('Global error:', event.error || event.message || 'Unknown error'); });
 
     window.addEventListener('beforeunload', () => { gameEngine.destroy(); });
-
-    // Hold-ESC to exit fullscreen globally
-    let escDownTime = 0;
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !escDownTime) escDownTime = Date.now(); });
-    document.addEventListener('keyup', async (e) => {
-      if (e.key === 'Escape') {
-        const held = Date.now() - escDownTime; escDownTime = 0;
-        if (held > 1800 && document.fullscreenElement) { // require hold
-          try { await document.exitFullscreen(); } catch(_) {}
-        }
-      }
-    });
   }
 
   /**
@@ -160,16 +124,8 @@
       console.log('Performance Stats:', gameEngine.getPerformanceStats());
     }
     
-    // Full screen toggle (F11 or F)
-    if (event.key === 'F11' || event.key === 'f') {
-      event.preventDefault();
-      toggleFullscreen();
-    }
-    
-    // Mute/unmute (M)
-    if (event.key === 'm' || event.key === 'M') {
-      toggleAudio();
-    }
+    // Full screen is managed by the container, no toggle here
+    // (removed: F11/F fullscreen toggle - 容器内全屏由容器统一管理)
   }
 
   /**
@@ -178,7 +134,7 @@
   function setupDevelopmentHelpers() {
     // Make game objects available globally for debugging
     window.GameDebug = {
-      gameEngine, gameState, audioManager, effectsManager, spawnManager, collisionDetector, uiManager,
+      gameEngine, gameState, effectsManager, spawnManager, collisionDetector, uiManager,
       // Helper functions
       spawnFruit: () => spawnManager.forceSpawn(),
       spawnBomb: () => spawnManager.spawnSpecificFruit("bomb", canvas.width/2, canvas.height, 0, -800),
@@ -201,36 +157,6 @@
   }
 
   /**
-   * Toggles fullscreen mode
-   */
-  function toggleFullscreen() {
-    if (!document.fullscreenElement) { document.documentElement.requestFullscreen().catch(()=>{}); }
-    else { document.exitFullscreen(); }
-  }
-
-  async function requestFullscreen() {
-    if (!document.fullscreenElement) { try { await document.documentElement.requestFullscreen(); } catch(_) {} }
-  }
-
-  /**
-   * Toggles audio on/off (一键静音)
-   */
-  function toggleAudio() {
-    const muted = audioManager.toggleMute();
-    updateMuteButton(muted);
-    console.log(muted ? "已静音" : "已恢复声音");
-  }
-
-  /**
-   * Updates the mute button icon
-   * @param {boolean} muted - 是否静音
-   */
-  function updateMuteButton(muted) {
-    const btn = document.getElementById('muteBtn');
-    if (btn) btn.textContent = muted ? '🔇' : '🔊';
-  }
-
-  /**
    * Shows an error message to the user
    * @param {string} message - Error message to display
    */
@@ -245,7 +171,7 @@
       color: white;
       padding: 20px;
       border-radius: 10px;
-      font-family: 'Montserrat', sans-serif;
+      font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
       text-align: center;
       z-index: 1000;
       max-width: 400px;
@@ -253,12 +179,15 @@
     errorDiv.innerHTML = `
       <h3>错误</h3>
       <p>${message}</p>
-      <button onclick="this.parentElement.remove(); location.reload();"
+      <button id="reloadBtn"
               style="margin-top: 10px; padding: 10px 20px; background: #fff; border: none; border-radius: 5px; cursor: pointer;">
-        重新加载
+        关闭
       </button>
     `;
-    
+
+    const reloadBtn = errorDiv.querySelector('#reloadBtn');
+    reloadBtn.addEventListener('click', () => { errorDiv.remove(); });
+
     document.body.appendChild(errorDiv);
   }
 
@@ -269,7 +198,6 @@
   function checkBrowserSupport() {
     const required = {
       canvas: !!document.createElement('canvas').getContext,
-      audioContext: !!(window.AudioContext || window.webkitAudioContext),
       requestAnimationFrame: !!window.requestAnimationFrame,
       performance: !!window.performance
     };
