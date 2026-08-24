@@ -65,6 +65,91 @@
   }
 
   /**
+   * 发布到笔记：截图当前画面（空画布时合成展示图）→ postNote
+   */
+  async function handlePublishNote() {
+    if (!window.xhs || !window.xhs.miniTool || !window.xhs.miniTool.postNote) {
+      showToast("当前环境不支持发布笔记", "#ff6b6b");
+      return;
+    }
+    try {
+      showToast("正在生成图片…", "#ffd166");
+      const dataUrl = await captureGameImage();
+      const best = gameState.bestScore || 0;
+      await window.xhs.miniTool.postNote({
+        title: "切水果上瘾小工具，来挑战最高分🍎",
+        content: `刚用小工具玩了几把水果忍者，根本停不下来 🍎\n\n✨ 玩法：\n- 手指一划就能切开飞起来的水果，超解压\n- 连续切开有连击加成，「疯狂连击」出现的时候特别爽\n- 红色炸弹千万别碰，一刀就游戏结束 💣\n\n📱 小亮点：\n- 手机上打开就是街机手感，竖屏自动转横屏\n- 最高分存在本地，随时回来挑战自己\n\n🎯 我现在的最高分是 ${best} 分，评论区交出你们的成绩！`,
+        pageType: "photo_publish",
+        tags: "#水果忍者 #解压小游戏 #摸鱼神器",
+        mediaInfo: {
+          image_resources: [{ url: dataUrl }]
+        }
+      });
+      showToast("已发起发布笔记", "#4cd964");
+    } catch (error) {
+      console.error("发布笔记失败:", error);
+      showToast("发布失败：" + (error && error.errMsg ? error.errMsg : "请重试"), "#ff6b6b");
+    }
+  }
+
+  /**
+   * 截取发布用图片：canvas 有画面时直接截屏，否则合成深色背景+标题展示图
+   * @returns {Promise<string>} data:image/png 的 data:uri
+   */
+  function captureGameImage() {
+    return new Promise((resolve) => {
+      const canvas = document.getElementById('gameCanvas');
+      // 画布已有内容（游戏画面）时直接截屏
+      if (!canvasIsEmpty(canvas)) {
+        resolve(canvas.toDataURL('image/png'));
+        return;
+      }
+      // 空画布：合成展示图（背景 + 遮罩 + 标题 + 最佳分）
+      const img = new Image();
+      img.onload = () => {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = 'rgba(0,0,0,0.55)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillStyle = '#fff';
+        ctx.font = `bold ${Math.round(canvas.width / 6)}px -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif`;
+        ctx.fillText('🍎 水果忍者', canvas.width / 2, canvas.height / 2 - canvas.height / 8);
+        ctx.fillStyle = '#ffd166';
+        ctx.font = `${Math.round(canvas.width / 14)}px -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif`;
+        ctx.fillText(`最佳成绩：${gameState.bestScore || 0}`, canvas.width / 2, canvas.height / 2 + canvas.height / 8);
+        resolve(canvas.toDataURL('image/png'));
+      };
+      // 背景加载失败时退回原画布截图
+      img.onerror = () => resolve(canvas.toDataURL('image/png'));
+      img.src = 'gamebg.webp';
+    });
+  }
+
+  /** 判断画布是否全透明（无任何内容） */
+  function canvasIsEmpty(canvas) {
+    try {
+      const data = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
+      for (let i = 3; i < data.length; i += 4000) {
+        if (data[i] !== 0) return false;
+      }
+    } catch (_) {}
+    return true;
+  }
+
+  /** 轻量提示 toast */
+  function showToast(msg, color) {
+    const el = document.createElement('div');
+    el.textContent = msg;
+    el.style.cssText = `position: fixed; top: 20%; left: 50%; transform: translateX(-50%); z-index: 6000; background: rgba(0,0,0,0.8); color: ${color || '#fff'}; padding: 12px 20px; border-radius: 10px; font-size: 16px; pointer-events: none; transition: opacity .4s;`;
+    document.body.appendChild(el);
+    setTimeout(() => { el.style.opacity = '0'; }, 2000);
+    setTimeout(() => el.remove(), 2500);
+  }
+
+  /**
    * 强制横屏：竖屏时给 body 加旋转类并交换 canvas 尺寸
    */
   function applyLandscape() {
@@ -99,6 +184,10 @@
         gameEngine.pauseGame();
       }
     });
+
+    // 发布到笔记按钮（JSBridge: postNote）
+    const publishBtn = document.getElementById('publishBtn');
+    if (publishBtn) publishBtn.addEventListener('click', handlePublishNote);
 
     document.addEventListener('keydown', (event) => { handleGlobalKeyPress(event); });
 

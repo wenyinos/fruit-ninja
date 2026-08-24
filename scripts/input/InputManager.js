@@ -49,7 +49,9 @@ class InputManager {
 
   /**
    * 强制横屏坐标换算：竖屏旋转 90° 时，把视口坐标转为 canvas 内容坐标
-   * 内容顺时针旋转 90° 后：内容 x = 内容宽 - 视口 y，内容 y = 视口 x
+   * CSS rotate(90deg) 顺时针旋转后（视觉铺满视口）：
+   *   内容 x 轴 → 视口 y 轴（向下），内容 y 轴 → 视口 x 轴（向左）
+   *   即：内容x = clientY，内容y = 视口宽 - clientX（竖屏时 canvas.height = 视口宽）
    * @returns {boolean} 是否处于竖屏旋转模式
    */
   isRotated() {
@@ -57,11 +59,11 @@ class InputManager {
   }
 
   toCanvasX(clientX, clientY) {
-    return this.isRotated() ? this.canvas.width - clientY : clientX;
+    return this.isRotated() ? clientY : clientX;
   }
 
   toCanvasY(clientX, clientY) {
-    return this.isRotated() ? clientX : clientY;
+    return this.isRotated() ? this.canvas.height - clientX : clientY;
   }
 
   /**

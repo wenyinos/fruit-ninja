@@ -337,10 +337,16 @@ class UIManager {
   /**
    * Creates a score popup effect
    * @param {number} points - Points gained
-   * @param {number} x - X position for popup
-   * @param {number} y - Y position for popup
+   * @param {number} x - X position for popup (canvas content coords)
+   * @param {number} y - Y position for popup (canvas content coords)
    */
   createScorePopup(points, x, y) {
+    // 强制横屏旋转模式下，fixed 定位需用视口坐标：视口X = 视口宽 - 内容y，视口Y = 内容x
+    if (window.innerHeight > window.innerWidth) {
+      const contentX = x;
+      x = window.innerWidth - y;
+      y = contentX;
+    }
     const popup = document.createElement("div");
     popup.style.cssText = `
       position: fixed;
